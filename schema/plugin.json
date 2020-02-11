@@ -1,0 +1,25 @@
+{
+    "jupyter.lab.setting-icon-class": "jp-SettingsIcon",
+    "jupyter.lab.setting-icon-label": "Multi Command",
+    "title": "Multi Command",
+    "description": "Multi Command",
+    "properties": {
+        "commands": {
+            "title": "multi commands",
+            "type": "array",
+            "items": { "$ref": "#/definitions/command" }
+        }
+    },
+    "definitions": {
+        "command": {
+            "type": "object",
+            "required": ["name", "commands"],
+            "properties": {
+                "name": { "type": "string" },
+                "commands": { "type": "array", "items": { "type": "string" } }
+            }
+        }
+    },
+    "additionalProperties": false,
+    "type": "object"
+}

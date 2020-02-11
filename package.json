@@ -1,0 +1,44 @@
+{
+    "name": "jupyterlab-multi-command",
+    "version": "0.1.0",
+    "description": "Execute multiple commands",
+    "keywords": [
+        "jupyter",
+        "jupyterlab",
+        "jupyterlab-extension"
+    ],
+    "homepage": "https://github.com/philopon/jupyterlab-multi-command",
+    "bugs": {
+        "url": "https://github.com/philopon/jupyterlab-multi-command/issues"
+    },
+    "license": "BSD-3-Clause",
+    "author": "Hirotomo Moriwaki",
+    "files": [
+        "lib/**/*.{d.ts,js}",
+        "schema/*.json"
+    ],
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/philopon/jupyterlab-multi-command.git"
+    },
+    "scripts": {
+        "build": "tsc",
+        "clean": "rimraf lib tsconfig.tsbuildinfo",
+        "prepare": "jlpm run clean && jlpm run build",
+        "watch": "tsc -w"
+    },
+    "dependencies": {
+        "@jupyterlab/application": "^1.1",
+        "@jupyterlab/coreutils": "^3.2.0"
+    },
+    "devDependencies": {
+        "rimraf": "^2.6.1",
+        "typescript": "~3.7.0"
+    },
+    "jupyterlab": {
+        "extension": true,
+        "schemaDir": "schema"
+    }
+}
