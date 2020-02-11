@@ -12,6 +12,12 @@
 jupyter labextension install jupyterlab-multi-command
 ```
 
+## Demo
+
+format using [jupyterlab_code_formatter](https://github.com/ryantam626/jupyterlab_code_formatter) and save file
+
+![demo](img/demo.gif)
+
 ## Contributing
 
 ### Install
