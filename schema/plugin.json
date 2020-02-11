@@ -2,12 +2,14 @@
     "jupyter.lab.setting-icon-class": "jp-SettingsIcon",
     "jupyter.lab.setting-icon-label": "Multi Command",
     "title": "Multi Command",
-    "description": "Multi Command",
+    "description": "execute multiple commands from single command",
     "properties": {
         "commands": {
-            "title": "multi commands",
+            "title": "commands",
+            "description": "{\n    \"name\": \"multiple-command-example\",\n    \"label\": \"Multiple command example\",\n    \"category\": \"example\",\n    \"commands\": [\"command1\", \"command2\"]\n}",
             "type": "array",
-            "items": { "$ref": "#/definitions/command" }
+            "items": { "$ref": "#/definitions/command" },
+            "default": []
         }
     },
     "definitions": {
@@ -16,6 +18,8 @@
             "required": ["name", "commands"],
             "properties": {
                 "name": { "type": "string" },
+                "label": { "type": "string" },
+                "category": { "type": "string" },
                 "commands": { "type": "array", "items": { "type": "string" } }
             }
         }
