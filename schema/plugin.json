@@ -8,20 +8,30 @@
             "title": "commands",
             "description": "{\n    \"name\": \"multiple-command-example\",\n    \"label\": \"Multiple command example\",\n    \"category\": \"example\",\n    \"commands\": [\"command1\", \"command2\"]\n}",
             "type": "array",
-            "items": { "$ref": "#/definitions/command" },
+            "items": { "$ref": "#/definitions/entry" },
             "default": []
         }
     },
     "definitions": {
-        "command": {
+        "entry": {
             "type": "object",
-            "required": ["name", "commands"],
+            "required": ["name"],
             "properties": {
                 "name": { "type": "string" },
                 "label": { "type": "string" },
                 "category": { "type": "string" },
-                "commands": { "type": "array", "items": { "type": "string" } }
+                "commands": { "type": "array", "items": { "$ref": "#/definitions/command" } }
             }
+        },
+        "command": {
+            "oneOf": [
+                { "type": "string" },
+                {
+                    "type": "object",
+                    "required": ["command"],
+                    "properties": { "command": { "type": "string", "args": { "type": "object" } } }
+                }
+            ]
         }
     },
     "additionalProperties": false,

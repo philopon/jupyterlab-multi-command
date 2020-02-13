@@ -3,13 +3,16 @@ import { ISettingRegistry } from "@jupyterlab/coreutils";
 import { ICommandPalette } from "@jupyterlab/apputils";
 import { IDisposable } from "@phosphor/disposable";
 import { CommandRegistry } from "@phosphor/commands";
+import { ReadonlyJSONObject } from "@phosphor/coreutils";
 
-interface Command {
+interface Entry {
     name: string;
-    commands: string[];
+    commands?: Command[];
     category?: string;
     label?: string;
 }
+
+type Command = string | { command: string; args?: ReadonlyJSONObject };
 
 class MultiCommandPlugin {
     private disposers: IDisposable[] = [];
@@ -21,24 +24,44 @@ class MultiCommandPlugin {
     ) {
         settings.changed.connect(this.updateSetting, this);
 
-        this.registerCommands((settings.user as any)["commands"]);
+        this.registerCommands(this.getConfig());
     }
 
-    registerCommands(commands: Command[]) {
-        for (const command of commands) {
-            const commandDisposer = this.commands.addCommand(command.name, {
-                label: command.label,
+    getConfig(): Entry[] {
+        const def: Entry[] = this.settings.default("commands") as any;
+        const user: Entry[] = this.settings.user.commands as any;
+        const merged: { [key: string]: Entry } = {};
+
+        for (const entry of [].concat(def, user)) {
+            merged[entry.name] = entry;
+        }
+
+        return Object.values(merged);
+    }
+
+    registerCommands(entries: Entry[]) {
+        for (const entry of entries) {
+            if (entry.commands === undefined || entry.commands.length === 0) {
+                continue;
+            }
+
+            const commandDisposer = this.commands.addCommand(entry.name, {
+                label: entry.label,
                 execute: async () => {
-                    for (const name of command.commands) {
-                        await this.commands.execute(name);
+                    for (const command of entry.commands || []) {
+                        if (typeof command === "string") {
+                            await this.commands.execute(command);
+                        } else {
+                            await this.commands.execute(command.command, command.args);
+                        }
                     }
                 },
             });
 
-            if (command.category !== undefined && command.label !== undefined) {
+            if (entry.category !== undefined && entry.label !== undefined) {
                 const paletteDisposer = this.palette.addItem({
-                    category: command.category,
-                    command: command.name,
+                    category: entry.category,
+                    command: entry.name,
                 });
                 this.disposers.push(paletteDisposer);
             }
@@ -53,9 +76,9 @@ class MultiCommandPlugin {
         }
     }
 
-    updateSetting(settings: ISettingRegistry.ISettings) {
+    updateSetting() {
         this.unregisterCommands();
-        this.registerCommands((settings.user as any)["commands"]);
+        this.registerCommands(this.getConfig());
     }
 
     dispose() {
@@ -70,7 +93,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
     requires: [ISettingRegistry, ICommandPalette],
 
     async activate(app: JupyterFrontEnd, registry: ISettingRegistry, palette: ICommandPalette) {
-        console.log(1);
         new MultiCommandPlugin(app.commands, await registry.load(plugin.id), palette);
     },
 };
