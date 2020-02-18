@@ -9,7 +9,7 @@
 ## Install
 
 ```bash
-jupyter labextension install jupyterlab-multi-command
+jupyter labextension install @philopon/jupyterlab-multi-command
 ```
 
 ## Demo
