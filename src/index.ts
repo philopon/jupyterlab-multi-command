@@ -29,7 +29,7 @@ class MultiCommandPlugin {
 
     getConfig(): Entry[] {
         const def: Entry[] = this.settings.default("commands") as any;
-        const user: Entry[] = this.settings.user.commands as any;
+        const user: Entry[] = (this.settings.user.commands || []) as any;
         const merged: { [key: string]: Entry } = {};
 
         for (const entry of [].concat(def, user)) {
