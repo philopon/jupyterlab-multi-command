@@ -1,6 +1,6 @@
 {
-    "name": "jupyterlab-multi-command",
-    "version": "0.3.1",
+    "name": "@philopon/jupyterlab-multi-command",
+    "version": "0.3.2",
     "description": "Execute multiple commands",
     "keywords": [
         "jupyter",
@@ -44,5 +44,8 @@
     "jupyterlab": {
         "extension": true,
         "schemaDir": "schema"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
