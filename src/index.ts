@@ -88,7 +88,7 @@ class MultiCommandPlugin {
 }
 
 const plugin: JupyterFrontEndPlugin<void> = {
-    id: "jupyterlab-multi-command:plugin",
+    id: "@philopon/jupyterlab-multi-command:plugin",
     autoStart: true,
     requires: [ISettingRegistry, ICommandPalette],
 
